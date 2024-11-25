@@ -1,0 +1,3 @@
+[submodule "automation_framework"]
+	path = automation_framework
+	url = https://github.com/GreyHa/automation_framework.git
