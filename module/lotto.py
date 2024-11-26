@@ -119,7 +119,7 @@ class lotto():
         self.당첨_연금복권_번호_data[str(회차)] = result
         return int(회차), result
 
-    def get_로또_당첨번호(self, Round:int=0):
+    def get_로또_당첨번호(self, Round:int=-1):
         result = []
 
         url = 'https://m.dhlottery.co.kr/gameResult.do?method=byWin'
