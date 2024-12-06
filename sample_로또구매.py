@@ -46,7 +46,7 @@ def 로또_구매(로또_번호:list):
 
     return 회차, 로또_번호 
 
-def 연금복권_구매(연금복권_번호:list):
+def 연금복권_구매(연금복권_번호:list, 모든조=True):
     '''
         연금복권_번호: [[번호7개],[번호7개]...]
         연금복권_번호는 최대 5개 까지만 적용
@@ -63,12 +63,17 @@ def 연금복권_구매(연금복권_번호:list):
 
     result = []
     
-    for 선택_번호 in 연금복권_번호[0:5]:
+    if 모든조 == True:
+        # 모든조가 같은 경우 첫번째 값 사용
+        연금복권_번호 = 연금복권_번호[0]
 
+    for 선택_번호 in 연금복권_번호[0:5]:
         # 조 선택
-        # 모든 조가 일반적이지만 코드 상으로는 다른 조도 선택 가능하도록 구현한 상태
-        client(el.lp72_jogrou, Value=f'{선택_번호[0]}조').FindValues(not_find_error=True).Click()
-        
+        if 모든조 == True:
+            client(el.lp72_allgroup).Click()
+        else:
+            client(el.lp72_jogroup, Value=f'{선택_번호[0]}조').FindValues(not_find_error=True).Click()
+
         # 첫번째 번호 칸 선택
         client(el.lp72_select_num).Click()
 
@@ -85,10 +90,16 @@ def 연금복권_구매(연금복권_번호:list):
             # 현재는 이미 판매된 번호에 대해서 스킵 처리
             client(el.lp72_not_close).Click()
         else:
-             result.append(연금복권_번호)
+            result.append(연금복권_번호)
 
     client(el.lp72_ok2).Click()
+    try:
+        #알람 발생시 확인 버튼 클릭
+        client.alert_accept()
+    except:
+        pass
     client(el.lp72_ok3).Click()
+
     return 회차, result
 
 
