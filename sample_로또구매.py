@@ -5,10 +5,6 @@ from automation_framework.__chromedriver_autoinstall__ import chrome_driver_inst
 import element.element as el
 import os
 
-__script_path__ = f'{os.path.dirname(os.path.abspath(__file__))}'
-login_id = conf.login_id
-login_pw = conf.login_pw
-
 def 로또_구매(로또_번호:list):
     '''
         로또_번호: [[번호6개],[번호6개]...]
@@ -44,7 +40,7 @@ def 로또_구매(로또_번호:list):
     client(el.lotto_ok2).Click()
     client(el.lotto_ok3).Click()
 
-    return 회차, 로또_번호 
+    return 회차, 로또_번호
 
 def 연금복권_구매(연금복권_번호:list, 모든조=True):
     '''
@@ -62,13 +58,10 @@ def 연금복권_구매(연금복권_번호:list, 모든조=True):
     회차 = client.driver.execute_script('return initround')
 
     result = []
-    
-    if 모든조 == True:
-        # 모든조가 같은 경우 첫번째 값 사용
-        연금복권_번호 = 연금복권_번호[0]
-
+        
     for 선택_번호 in 연금복권_번호[0:5]:
         # 조 선택
+        
         if 모든조 == True:
             client(el.lp72_allgroup).Click()
         else:
@@ -90,11 +83,14 @@ def 연금복권_구매(연금복권_번호:list, 모든조=True):
             # 현재는 이미 판매된 번호에 대해서 스킵 처리
             client(el.lp72_not_close).Click()
         else:
-            result.append(연금복권_번호)
-
+            if 모든조 == True:
+                result = [[1] + 선택_번호[1:7], [2] + 선택_번호[1:7], [3] + 선택_번호[1:7], [4] + 선택_번호[1:7], [5] + 선택_번호[1:7]]
+                break
+            else:
+                result.append(연금복권_번호)
+    
     client(el.lp72_ok2).Click()
     try:
-        #알람 발생시 확인 버튼 클릭
         client.alert_accept()
     except:
         pass
@@ -103,37 +99,41 @@ def 연금복권_구매(연금복권_번호:list, 모든조=True):
     return 회차, result
 
 
+if __name__ == '__main__':
+    __script_path__ = f'{os.path.dirname(os.path.abspath(__file__))}'
+    login_id = conf.login_id
+    login_pw = conf.login_pw
 
-Lotto = lotto()
-client = Web()
+    Lotto = lotto()
+    client = Web()
 
-# 드라이버 접속
-client.Connection(executable_path=chrome_driver_install_path(base_path=__script_path__))
+    # 드라이버 접속
+    client.Connection(executable_path=chrome_driver_install_path(base_path=__script_path__))
 
-#동행 복권 로그인
-login_url = 'https://dhlottery.co.kr/user.do?method=login'
-client.Change_url(login_url)
+    #동행 복권 로그인
+    login_url = 'https://dhlottery.co.kr/user.do?method=login'
+    client.Change_url(login_url)
 
-client(el.login_id, Value=login_id).Send()
-client(el.login_pw, Value=login_pw).Send()
-client(el.login_bt).Click()
-client.sleep(5)
-
-
-#로또 번호 생성
-로또_번호 = Lotto.랜덤_로또_번호()
-print(로또_번호)
-
-#로또 구매
-로또_회차, 로또번호 = 로또_구매(로또_번호=로또_번호)
+    client(el.login_id, Value=login_id).Send()
+    client(el.login_pw, Value=login_pw).Send()
+    client(el.login_bt).Click()
+    client.sleep(5)
 
 
-#연금복권 번호 생성
-연금복권_번호 = Lotto.랜덤_연금복권_번호()
-print(연금복권_번호)
+    #로또 번호 생성
+    로또_번호 = Lotto.랜덤_로또_번호()
+    print(로또_번호)
 
-#연금복권 구매
-연금복권_회차, 연금복권_번호 = 연금복권_구매(연금복권_번호=연금복권_번호)
+    #로또 구매
+    로또_회차, 로또번호 = 로또_구매(로또_번호=로또_번호)
 
-#드라이버 종료
-client.driver.quit()
+
+    #연금복권 번호 생성
+    연금복권_번호 = Lotto.랜덤_연금복권_번호()
+    print(연금복권_번호)
+
+    #연금복권 구매
+    연금복권_회차, 연금복권_번호 = 연금복권_구매(연금복권_번호=연금복권_번호)
+
+    #드라이버 종료
+    client.driver.quit()
