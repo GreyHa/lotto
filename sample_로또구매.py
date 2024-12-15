@@ -5,7 +5,7 @@ from automation_framework.__chromedriver_autoinstall__ import chrome_driver_inst
 import element.element as el
 import os
 
-def 로또_구매(로또_번호:list):
+def 로또_구매(client:Web, 로또_번호:list):
     '''
         로또_번호: [[번호6개],[번호6개]...]
         로또_번호는 최대 5개 까지만 적용
@@ -42,7 +42,7 @@ def 로또_구매(로또_번호:list):
 
     return 회차, 로또_번호
 
-def 연금복권_구매(연금복권_번호:list, 모든조=True):
+def 연금복권_구매(client:Web, 연금복권_번호:list, 모든조=True):
     '''
         연금복권_번호: [[번호7개],[번호7개]...]
         연금복권_번호는 최대 5개 까지만 적용
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     print(로또_번호)
 
     #로또 구매
-    로또_회차, 로또번호 = 로또_구매(로또_번호=로또_번호)
+    로또_회차, 로또번호 = 로또_구매(client, 로또_번호=로또_번호)
 
 
     #연금복권 번호 생성
@@ -133,7 +133,7 @@ if __name__ == '__main__':
     print(연금복권_번호)
 
     #연금복권 구매
-    연금복권_회차, 연금복권_번호 = 연금복권_구매(연금복권_번호=연금복권_번호)
+    연금복권_회차, 연금복권_번호 = 연금복권_구매(client, 연금복권_번호=연금복권_번호)
 
     #드라이버 종료
     client.driver.quit()
