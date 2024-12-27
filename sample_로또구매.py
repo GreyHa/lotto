@@ -94,7 +94,9 @@ def 연금복권_구매(client:Web, 연금복권_번호:list, 모든조=True):
         client.alert_accept()
     except:
         pass
-    client(el.lp72_ok3).Click()
+
+    if result:
+        client(el.lp72_ok3).Click()
 
     return 회차, result
 
