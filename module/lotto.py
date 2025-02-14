@@ -10,12 +10,12 @@ class lotto():
         self.로또_선택_번호 = list(range(1,46))
         self.연금복권_선택_번호 = {
             '0':list(range(1,6)),
-            '1':list(range(1,10)),
-            '2':list(range(1,10)),
-            '3':list(range(1,10)),
-            '4':list(range(1,10)),
-            '5':list(range(1,10)),
-            '6':list(range(1,10))
+            '1':list(range(0,10)),
+            '2':list(range(0,10)),
+            '3':list(range(0,10)),
+            '4':list(range(0,10)),
+            '5':list(range(0,10)),
+            '6':list(range(0,10))
         }
         
         
@@ -48,11 +48,11 @@ class lotto():
     def 랜덤_연금복권_번호(self, 고정_번호={}, delay=0):
         '''
             고정_번호 = {
-                '1': 1~9,
+                '1': 0~9,
                 .
                 ..
                 ...
-                '6': 1~9
+                '6': 0~9
             }
             key 값 1~6
             특정 자리수를 고정
