@@ -30,7 +30,7 @@ class lotto():
                 '6': [],
             }
             
-            각 array에 들어 갈 숫자 범위는 1~9
+            각 array에 들어 갈 숫자 범위는 0~9
             숫자가 많을 수록 그 숫자가 뽑히는 확률 증가
         '''
         for key in data:
@@ -45,7 +45,7 @@ class lotto():
         '''
         self.로또_선택_번호 += data
 
-    def 랜덤_연금복권_번호(self, 고정_번호={}, delay=0):
+    def 랜덤_연금복권_번호(self, 고정_번호:dict={}, delay=0):
         '''
             고정_번호 = {
                 '1': 0~9,
